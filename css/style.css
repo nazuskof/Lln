@@ -26,6 +26,4 @@ html, body {
   left: 0;
   will-change: transform;
   pointer-events: none;
-  filter: invert(1) brightness(2);
-  mix-blend-mode: screen;
 }

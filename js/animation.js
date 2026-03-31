@@ -14,7 +14,29 @@ document.addEventListener('DOMContentLoaded', () => {
     return min + Math.random() * (max - min);
   }
 
-  function createLogos() {
+  function makeWhiteLogo(img) {
+    const canvas = document.createElement('canvas');
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+      const r = data[i], g = data[i + 1], b = data[i + 2];
+      if (r > 200 && g > 200 && b > 200) {
+        data[i + 3] = 0;
+      } else {
+        data[i] = 255;
+        data[i + 1] = 255;
+        data[i + 2] = 255;
+      }
+    }
+    ctx.putImageData(imageData, 0, 0);
+    return canvas.toDataURL();
+  }
+
+  function createLogos(whiteSrc) {
     for (let i = 0; i < LOGO_COUNT; i++) {
       const speed = random(MIN_SPEED, MAX_SPEED);
       const angle = Math.random() * 2 * Math.PI;
@@ -27,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         vy: speed * Math.sin(angle),
       };
 
-      logo.el.src = LOGO_SRC;
+      logo.el.src = whiteSrc;
       logo.el.className = 'bouncing-logo';
       logo.el.style.width = LOGO_SIZE + 'px';
       logo.el.style.height = LOGO_SIZE + 'px';
@@ -82,6 +104,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  createLogos();
-  requestAnimationFrame(animate);
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = () => {
+    const whiteSrc = makeWhiteLogo(img);
+    createLogos(whiteSrc);
+    requestAnimationFrame(animate);
+  };
+  img.src = LOGO_SRC;
 });
