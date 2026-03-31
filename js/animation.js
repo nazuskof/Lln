@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const LOGO_COUNT = 18;
-  const MIN_SIZE = 40;
-  const MAX_SIZE = 120;
+  const LOGO_COUNT = 32;
+  const LOGO_SIZE = 80;
   const MIN_SPEED = 30;
   const MAX_SPEED = 150;
   const LOGO_SRC = 'assets/IMG_0703.png';
@@ -17,25 +16,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function createLogos() {
     for (let i = 0; i < LOGO_COUNT; i++) {
-      const size = random(MIN_SIZE, MAX_SIZE);
       const speed = random(MIN_SPEED, MAX_SPEED);
       const angle = Math.random() * 2 * Math.PI;
 
       const logo = {
         el: document.createElement('img'),
-        x: random(0, sceneWidth - size),
-        y: random(0, sceneHeight - size),
+        x: random(0, sceneWidth - LOGO_SIZE),
+        y: random(0, sceneHeight - LOGO_SIZE),
         vx: speed * Math.cos(angle),
         vy: speed * Math.sin(angle),
-        size: size,
-        rotation: random(0, 360),
-        rotationSpeed: random(-90, 90),
       };
 
       logo.el.src = LOGO_SRC;
       logo.el.className = 'bouncing-logo';
-      logo.el.style.width = size + 'px';
-      logo.el.style.height = size + 'px';
+      logo.el.style.width = LOGO_SIZE + 'px';
+      logo.el.style.height = LOGO_SIZE + 'px';
       logo.el.draggable = false;
 
       scene.appendChild(logo.el);
@@ -47,26 +42,25 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const logo of logos) {
       logo.x += logo.vx * dt;
       logo.y += logo.vy * dt;
-      logo.rotation += logo.rotationSpeed * dt;
 
       if (logo.x <= 0) {
         logo.x = 0;
         logo.vx *= -1;
-      } else if (logo.x + logo.size >= sceneWidth) {
-        logo.x = sceneWidth - logo.size;
+      } else if (logo.x + LOGO_SIZE >= sceneWidth) {
+        logo.x = sceneWidth - LOGO_SIZE;
         logo.vx *= -1;
       }
 
       if (logo.y <= 0) {
         logo.y = 0;
         logo.vy *= -1;
-      } else if (logo.y + logo.size >= sceneHeight) {
-        logo.y = sceneHeight - logo.size;
+      } else if (logo.y + LOGO_SIZE >= sceneHeight) {
+        logo.y = sceneHeight - LOGO_SIZE;
         logo.vy *= -1;
       }
 
       logo.el.style.transform =
-        'translate(' + logo.x + 'px,' + logo.y + 'px) rotate(' + logo.rotation + 'deg)';
+        'translate(' + logo.x + 'px,' + logo.y + 'px)';
     }
   }
 
@@ -83,8 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
     sceneWidth = window.innerWidth;
     sceneHeight = window.innerHeight;
     for (const logo of logos) {
-      if (logo.x + logo.size > sceneWidth) logo.x = sceneWidth - logo.size;
-      if (logo.y + logo.size > sceneHeight) logo.y = sceneHeight - logo.size;
+      if (logo.x + LOGO_SIZE > sceneWidth) logo.x = sceneWidth - LOGO_SIZE;
+      if (logo.y + LOGO_SIZE > sceneHeight) logo.y = sceneHeight - LOGO_SIZE;
     }
   });
 
