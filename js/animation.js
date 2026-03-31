@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const MAX_SIZE = 120;
   const MIN_SPEED = 30;
   const MAX_SPEED = 150;
-  const LOGO_SRC = 'assets/logo.png';
+  const LOGO_SRC = 'assets/IMG_0703.png';
 
   const scene = document.getElementById('scene');
   const logos = [];
